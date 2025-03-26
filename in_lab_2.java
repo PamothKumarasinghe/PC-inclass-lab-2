@@ -64,7 +64,7 @@ public class in_lab_2 {
     private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        loadMoviesFromCSV("movies.csv"); // Load movies from CSV
+        loadMoviesFromCSV("Movie Reservation Dataset.csv"); // Load movies from CSV
         startBookingProcess(); // Start ticket reservation
     }
 
