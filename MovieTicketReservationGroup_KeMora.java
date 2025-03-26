@@ -53,7 +53,7 @@ public class MovieTicketReservationGroup_KeMora {
         loadMoviesFromCSV("Movie Reservation Dataset.csv");
         bookTickets();
     }
-
+    /** This method will load and read the csv file from the computer */
     private static void loadMoviesFromCSV(String filename) {
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             String line;
@@ -65,11 +65,12 @@ public class MovieTicketReservationGroup_KeMora {
                         Double.parseDouble(data[6].trim()), data[7].trim(), data[8].trim());
                 movieList.add(movie);
             }
-        } catch (IOException e) {
+        } 
+        catch (IOException e) {
             System.out.println("Error loading movies: " + e.getMessage());
         }
     }
-
+    /** This method will book the tickets if it is valid */
     private static void bookTickets() {
         List<Movie> selectedMovies = null;
         Movie selectedMovie = null;
@@ -77,15 +78,16 @@ public class MovieTicketReservationGroup_KeMora {
 
         while (selectedMovies == null || selectedMovies.isEmpty()) {
             try {
-                System.out.print("Enter The Movie Code: ");
+                System.out.print("Enter The Movie Code : ");
                 String movieCode = sc.nextLine().trim().toUpperCase();
                 selectedMovies = validateMovieCode(movieCode);
-            } catch (InvalidMovieCodeException e) {
-                System.out.println("Error: " + e.getMessage());
+            } 
+            catch (InvalidMovieCodeException e) {
+                System.out.println("Error : " + e.getMessage());
             }
         }
 
-        // Select Showtime
+        // Select Showtimes for the Movie
         while (selectedMovie == null) {
             try {
                 System.out.println("Available Showtimes:");
@@ -98,8 +100,9 @@ public class MovieTicketReservationGroup_KeMora {
                     throw new InvalidShowtimeException("Invalid selection! Please choose a valid showtime.");
                 }
                 selectedMovie = selectedMovies.get(choice - 1);
-            } catch (NumberFormatException | InvalidShowtimeException e) {
-                System.out.println("⚠ Error: " + e.getMessage());
+            } 
+            catch (NumberFormatException | InvalidShowtimeException e) {
+                System.out.println("Error: " + e.getMessage());
             }
         }
 
@@ -109,14 +112,15 @@ public class MovieTicketReservationGroup_KeMora {
                 System.out.print("Enter Number of Tickets: ");
                 tickets = validateTicketQuantity(sc.nextLine().trim(), selectedMovie);
                 break;
-            } catch (InvalidTicketQuantityException | OverbookingException e) {
-                System.out.println("⚠ Error: " + e.getMessage());
+            } 
+            catch (InvalidTicketQuantityException | OverbookingException e) {
+                System.out.println("Error: " + e.getMessage());
             }
         }
 
         confirmBooking(selectedMovie, tickets);
     }
-
+    /** Checks if the movie code is valid or not */
     private static List<Movie> validateMovieCode(String code) throws InvalidMovieCodeException {
         List<Movie> matchingMovies = new ArrayList<>();
         for (Movie movie : movieList) {
@@ -125,22 +129,22 @@ public class MovieTicketReservationGroup_KeMora {
             }
         }
         if (matchingMovies.isEmpty()) {
-            throw new InvalidMovieCodeException("Movie code not found! Please enter a valid code.");
+            throw new InvalidMovieCodeException("Movie code cannot be found! plz enter a new code.");
         }
         return matchingMovies;
     }
 
+    /** This method will checks if teh ticket quantity is valid or not */
     private static int validateTicketQuantity(String input, Movie movie) throws InvalidTicketQuantityException, OverbookingException {
         try {
             int tickets = Integer.parseInt(input);
-            if (tickets <= 0) {
-                throw new InvalidTicketQuantityException("Ticket quantity must be a positive integer.");
-            }
-            if (tickets > movie.availableSeats) {
-                throw new OverbookingException("Not enough seats available! Try booking fewer tickets.");
-            }
+            if (tickets <= 0) throw new InvalidTicketQuantityException("Ticket quantity must be a positive integer.");
+            
+            if (tickets > movie.availableSeats) throw new OverbookingException("Not enough seats available! Try booking fewer tickets.");
+            
             return tickets;
-        } catch (NumberFormatException e) {
+        } 
+        catch (NumberFormatException e) {
             throw new InvalidTicketQuantityException("Invalid number! Please enter a positive integer.");
         }
     }
@@ -148,14 +152,14 @@ public class MovieTicketReservationGroup_KeMora {
     private static void confirmBooking(Movie movie, int tickets) {
         double totalCost = tickets * movie.ticketPrice;
         
-        System.out.println("\n✅ Booking Confirmed!");
-        System.out.println("🎬 Movie: " + movie.name);
-        System.out.println("📅 Date: " + movie.date);
-        System.out.println("⌚ Showtime: " + movie.showtime);
-        System.out.println("🎟️ Tickets: " + tickets);
-        System.out.println("💰 Total Cost: $" + totalCost);
+        System.out.println("\n -----Booking Confirmed!----");
+        System.out.println(" Movie: " + movie.name);
+        System.out.println(" Date: " + movie.date);
+        System.out.println(" Showtime: " + movie.showtime);
+        System.out.println(" Tickets: " + tickets);
+        System.out.println(" Total Cost: " + totalCost);
 
-        System.out.print("\nEnter Email for PDF Bill: ");
+        System.out.print("\nEnter Email sent the PDF Bill: ");
         String email = sc.nextLine().trim();
 
         generatePDFBill(movie, tickets, totalCost, email);
@@ -167,16 +171,16 @@ public class MovieTicketReservationGroup_KeMora {
             PdfWriter.getInstance(document, new FileOutputStream("Ticket_Bill.pdf"));
             document.open();
             
-            document.add(new Paragraph("------ 🎟️ Movie Ticket Reservation Bill ------"));
-            document.add(new Paragraph("Movie: " + movie.name));
-            document.add(new Paragraph("Date: " + movie.date));
-            document.add(new Paragraph("Showtime: " + movie.showtime));
-            document.add(new Paragraph("Tickets: " + tickets));
-            document.add(new Paragraph("Total Cost: $" + totalCost));
-            document.add(new Paragraph("\n✅ Thank you for booking with us!"));
+            document.add(new Paragraph("------  Movie Ticket Reservation Bill ------"));
+            document.add(new Paragraph("Movie : " + movie.name));
+            document.add(new Paragraph("Date : " + movie.date));
+            document.add(new Paragraph("Showtime : " + movie.showtime));
+            document.add(new Paragraph("Tickets : " + tickets));
+            document.add(new Paragraph("Total Cost: " + totalCost));
+            document.add(new Paragraph("\n******Thank you for booking with us (KeMora)!*****"));
             
             document.close();
-            System.out.println("📄 PDF Bill Generated: Ticket_Bill.pdf (Sent to " + email + ")");
+            System.out.println(" ----PDF Bill Generated: Ticket_Bill.pdf (Sent to " + email + ")----");
         } catch (Exception e) {
             System.out.println("Error generating PDF: " + e.getMessage());
         }
