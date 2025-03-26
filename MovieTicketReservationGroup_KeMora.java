@@ -3,6 +3,7 @@ import java.util.*;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 
+// Custom Exceptions for the Movie Ticket Reservation System that asks from problem //
 class InvalidMovieCodeException extends Exception {
     public InvalidMovieCodeException(String message) {
         super(message);
@@ -26,7 +27,7 @@ class OverbookingException extends Exception {
         super(message);
     }
 }
-
+// Movie class for the movie details
 class Movie {
     String code, name, date, showtime, language, genre;
     int totalSeats, availableSeats;
