@@ -145,11 +145,11 @@ public class in_lab_2 {
     // 🔹 Confirm & Generate Bill
     private static void confirmBooking(Movie movie, int tickets) {
         double totalCost = tickets * movie.ticketPrice;
-        System.out.println("\n✅ Booking Confirmed!");
-        System.out.println("🎬 Movie: " + movie.name);
-        System.out.println("⌚ Showtime: " + movie.showtime);
-        System.out.println("🎟️ Tickets: " + tickets);
-        System.out.println("💰 Total Cost: $" + totalCost);
+        System.out.println("\n Booking Confirmed!");
+        System.out.println(" Movie: " + movie.name);
+        System.out.println(" Showtime: " + movie.showtime);
+        System.out.println(" Tickets: " + tickets);
+        System.out.println(" Total Cost: $" + totalCost);
 
         System.out.print("\nEnter Email for PDF Bill: ");
         String email = scanner.nextLine().trim();
@@ -162,7 +162,7 @@ public class in_lab_2 {
         try {
             PdfWriter.getInstance(document, new FileOutputStream("Ticket_Bill.pdf"));
             document.open();
-            document.add(new Paragraph("🎟️ Movie Ticket Reservation Bill"));
+            document.add(new Paragraph("------ Movie Ticket Reservation Bill------"));
             document.add(new Paragraph("Movie: " + movie.name));
             document.add(new Paragraph("Showtime: " + movie.showtime));
             document.add(new Paragraph("Tickets: " + tickets));
