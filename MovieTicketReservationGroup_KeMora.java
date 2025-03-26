@@ -2,6 +2,13 @@ import java.io.*;
 import java.util.*;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
+/** cashier enters the movie code, if it valid then the date, if valid then showtime */
+/** if any of them are not valid, then the corresponding exception willr raise */
+/** if the ticket quantity is not valid, then the corresponding exception will raise */
+/** if the ticket quantity is more than the available seats, then the corresponding exception will raise */
+/** if all the inputs are valid, then the ticket will be booked and the pdf bill will be generated */
+/** if the pdf bill is generated, then the email will be sent to the user */
+//used itextpdf to generate the pdf*/
 
 // Custom Exceptions for the Movie Ticket Reservation System that asks from problem //
 class InvalidMovieCodeException extends Exception {
